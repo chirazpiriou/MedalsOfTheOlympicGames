@@ -17,7 +17,10 @@ export class HomeComponent implements OnInit {
   public loadingOlympicData=false;
   public loadError=false;
 
-  public olympicData!:Olympic[];
+  public countriesNumber: number = 0;
+  public joNumber: number = 0;
+  public countryVersusTotalsMedals :{ [country: string]:number} = {};
+  public countrysVersusTotalsMedalsPieChartFormat: { name: string; value: number }[] = [];
 
   constructor(private olympicService: OlympicService) {}
 
@@ -28,14 +31,21 @@ export class HomeComponent implements OnInit {
       next: (data:Olympic[]) => {
         this.loadingOlympicData = false; //Data loading has finished
         if (data && data.length > 0){
-          this.olympicData = data;
+          this.countriesNumber = data.length;
+          this.joNumber = data.flatMap(country => country.participations ).length/this.countriesNumber
+          data.forEach(countryBloc => {
+            let totalMedalsByCountry:number = countryBloc.participations.reduce((total: number , countryParticipation) => {
+              return total + countryParticipation.medalsCount;}, 0);
+            this.countryVersusTotalsMedals[countryBloc.country] =totalMedalsByCountry
+            this.countrysVersusTotalsMedalsPieChartFormat=Object.entries(this.countryVersusTotalsMedals).map(([name,value])=>({name,value}));
+          })
         } else {
-          this.loadError=true; //no data available
+          this.loadError = true; //no data available
         }
       },
       error: (error) =>{
         this.loadingOlympicData=false;
-        this.loadError=true;
+        this.loadError = true;
         console.error("Error when subscribing to Olympic data",error)
       },
       complete: () => {
