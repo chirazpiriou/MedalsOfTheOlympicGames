@@ -1,0 +1,36 @@
+
+.Square{
+    width: 100%;
+    margin: 0 auto;
+    max-width: 500px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 20px;
+    padding-bottom: 40px;
+    font-family: 'Lobster', cursive;
+}
+
+.FirstSquare{
+    border: 2px solid ;
+    color:white ;
+    background-color:#04838f ;
+    text-align: center;
+    border-radius: 10px;
+    grid-column: 1/3;
+    grid-row:1/2 ;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+.SecondSquare, .ThirdSquare{
+    border: 2px solid #04838f;
+    color:gray ;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.country{
+    color: black;
+    font-weight: bold;
+
+}

@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
+import { Participation } from '../models/Participation';
 
 
 @Injectable({
@@ -65,5 +66,27 @@ export class OlympicService {
 
   getOlympics(): Observable<Olympic[]> {
     return this.olympics$.asObservable();
+  }
+
+
+  /**
+ * The getOlympicsCountryByCountryName function retrieves the participation data
+ * for a specific country, identified by its ID.
+ * It returns an observable that emits an array of Participation objects.*/
+  getOlympicsCountryByCountryName(countryId :number): Observable<Participation[]> {
+    return this.olympics$.asObservable().pipe(
+      map(countries  => {
+        const  countryDetails = countries.find(x => x.id === countryId );
+        if (!countryDetails){
+          throw new Error ('No country found for ID: ${countryId}');
+        }
+        return countryDetails.participations;
+    }),
+      catchError(error => {
+        console.error(error);
+        return of([]);
+
+      })
+  );
   }
 }
