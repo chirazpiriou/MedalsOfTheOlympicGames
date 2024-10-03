@@ -1,0 +1,39 @@
+
+
+.SquareDetail{
+    width: 100%;
+    margin: 0 auto;
+    max-width: 500px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 20px;
+    text-align: center;
+    padding-bottom: 80px;
+    font-family: 'Lobster', cursive;
+}
+
+
+.FirstSquareDetail{
+    border: 2px solid ;
+    color:white ;
+    background-color:#04838f ;
+    border-radius: 10px;
+    grid-column: 1/4;
+    grid-row:1/2 ;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+.SecondSquareDetail, .ThirdSquareDetail,.FourthSquareDetail{
+    border: 2px solid #04838f;
+    color:gray ;
+    border-radius: 10px;
+    
+}
+
+.countryDetail{
+    color: black;
+    font-weight: bold;
+
+}
+
