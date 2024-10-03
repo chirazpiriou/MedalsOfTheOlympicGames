@@ -15,4 +15,14 @@
             <p class="country">{{countriesNumber}}</p>
         </div>
     </section>
+    <div class="PieChartBloc ">
+        <ngx-charts-pie-chart
+            [results]="countrysVersusTotalsMedalsPieChartFormat"
+            [view]="view"
+            [doughnut]="false"
+            [gradient]="gradient"
+            [legend]="showLegend"
+            [labels]="showLabels" />
+        </div>
+        <br>
 </main>

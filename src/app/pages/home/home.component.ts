@@ -16,11 +16,22 @@ export class HomeComponent implements OnInit {
   public olympicSubscription!: Subscription;
   public loadingOlympicData=false;
   public loadError=false;
-
   public countriesNumber: number = 0;
   public joNumber: number = 0;
   public countryVersusTotalsMedals :{ [country: string]:number} = {};
   public countrysVersusTotalsMedalsPieChartFormat: { name: string; value: number }[] = [];
+
+
+  // options Pie chart
+  gradient: boolean = false;
+  showLegend: boolean = false;
+  showLabels: boolean = true;
+  isDoughnut: boolean = false;
+  view: [number, number] = [700, 500];
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+
 
   constructor(private olympicService: OlympicService) {}
 

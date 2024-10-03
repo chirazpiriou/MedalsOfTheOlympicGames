@@ -10,7 +10,6 @@
     padding-bottom: 40px;
     font-family: 'Lobster', cursive;
 }
-
 .FirstSquare{
     border: 2px solid ;
     color:white ;
@@ -28,9 +27,13 @@
     text-align: center;
     border-radius: 10px;
 }
-
 .country{
     color: black;
     font-weight: bold;
-
+}
+.PieChartBloc{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
 }
