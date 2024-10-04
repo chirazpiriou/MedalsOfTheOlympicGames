@@ -13,29 +13,45 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 })
 export class DetailComponent implements OnInit{
   public participation$ : Observable <Participation[]>  = of([]);
-  public olympicSubscription!: Subscription;
-  public olympics$ : Observable <Olympic[]>  = of([]);
+  public participationSubscription!: Subscription;
   public participationData !:Participation[];
   private routeSubscription!: Subscription; 
   public selectedCountry: string = '';
+  public totalNumberOfENtries:number=0;
+  public totalNumberMedals:number=0;
+  public totalNumberOfAthletes:number=0;
 
 
-  public countriesNumber: number = 0;
   constructor(private olympicService: OlympicService , private route: ActivatedRoute){}
 
  
 
   ngOnInit(): void {
+
+    /** Subscribe to the route parameters to track changes in the URL. Retrieve the country parameter from the URL.
+     * At this point, this.selectedCountry will contain the name of the selected country based on what was specified in the URL */
     this.routeSubscription=this.route.params.subscribe(urlParams=>{
       this.selectedCountry=urlParams['country'];
     })
 
 
-    this.olympics$ = this.olympicService.getOlympics();
-    this.olympicSubscription = this.olympics$.subscribe({
-      next: (data:Olympic[]) => {
+    this.participation$ = this.olympicService.getOlympicsCountryByCountryName(this.selectedCountry);
+    this.participationSubscription = this.participation$.subscribe({
+      next: (data:Participation[]) => {
         if (data && data.length > 0){
-          this.countriesNumber = data.length;
+          this.participationData = data
+          this.totalNumberOfENtries=data.length;
+          
+          let NumberMedalsCount : number =data.reduce(
+            (total:number ,countryNumberMedals )=>
+            {return total+countryNumberMedals.medalsCount;},0);
+            this.totalNumberMedals = NumberMedalsCount;
+
+            let NumberAthletesCount : number =data.reduce(
+              (total:number ,countryNumberAthletes )=>
+              {return total+countryNumberAthletes.athleteCount;},0);
+              this.totalNumberOfAthletes = NumberAthletesCount ;
+
         } 
 
     }});
@@ -45,7 +61,7 @@ export class DetailComponent implements OnInit{
   }
 
   ngOnDestroy(): void{
-    this.olympicSubscription.unsubscribe();
+    this.participationSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     
   }
