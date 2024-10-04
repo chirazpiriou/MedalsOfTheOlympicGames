@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of, Subscription } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
+
 import { Participation } from 'src/app/core/models/Participation';
 
 import { OlympicService } from 'src/app/core/services/olympic.service';
@@ -12,16 +13,17 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
   styleUrl: './detail.component.scss'
 })
 export class DetailComponent implements OnInit{
-  public participation$ : Observable <Participation[]>  = of([]);
+  public olympic$ : Observable <Olympic>  = of();
   public participationSubscription!: Subscription;
   public participationData !:Participation[];
   private routeSubscription!: Subscription; 
-  public selectedCountry: string = '';
+  public selectedCountryId: number = 0;
   public totalNumberOfENtries:number=0;
   public totalNumberMedals:number=0;
   public totalNumberOfAthletes:number=0;
-  public countryVersusMedalsPerYear:{[country:string]:{year: number,medalsCount: number}[]}={};
+  public countryVersusMedalsPerYear:{[id:number]:{year: number,medalsCount: number}[]}={};
   public countrysVersusMedalsPerYearLineChartFormat: { name: string; series: {value:number,name:string}[] }[] = [];
+  public countryName !: string;
 
    // options Line chart
    legend: boolean = false;
@@ -46,32 +48,32 @@ export class DetailComponent implements OnInit{
   ngOnInit(): void {
 
     /** Subscribe to the route parameters to track changes in the URL. Retrieve the country parameter from the URL.
-     * At this point, this.selectedCountry will contain the name of the selected country based on what was specified in the URL */
+     * At this point, this.selectedCountryId will contain the name of the selected country based on what was specified in the URL */
     this.routeSubscription=this.route.params.subscribe(urlParams=>{
-      this.selectedCountry=urlParams['country'];
+      this.selectedCountryId=parseInt(urlParams['id'], 10);
     })
 
 
-    this.participation$ = this.olympicService.getOlympicsCountryByCountryName(this.selectedCountry);
-    this.participationSubscription = this.participation$.subscribe({
-      next: (data:Participation[]) => {
-        if (data && data.length > 0){
-          this.participationData = data
-          this.totalNumberOfENtries=data.length;
-          
-          let NumberMedalsCount : number =data.reduce(
+    this.olympic$ = this.olympicService.getOlympicsCountryByCountryId(this.selectedCountryId);
+    this.participationSubscription = this.olympic$.subscribe({
+      next: (data:Olympic) => {
+        if (data && data.participations.length > 0){
+          this.participationData = data.participations
+          this.totalNumberOfENtries = this.participationData.length;
+          this.countryName = data.country;
+          let NumberMedalsCount : number = this.participationData.reduce(
             (total:number ,countryNumberMedals )=>
             {return total+countryNumberMedals.medalsCount;},0);
             this.totalNumberMedals = NumberMedalsCount;
 
-          let NumberAthletesCount : number =data.reduce(
+          let NumberAthletesCount : number = this.participationData.reduce(
             (total:number ,countryNumberAthletes )=>
             {return total+countryNumberAthletes.athleteCount;},0);
             this.totalNumberOfAthletes = NumberAthletesCount ;
 
-          this.countryVersusMedalsPerYear[this.selectedCountry] = [];
-          data.forEach(participation=>{
-            this.countryVersusMedalsPerYear[this.selectedCountry].push(
+          this.countryVersusMedalsPerYear[this.selectedCountryId] = [];
+          this.participationData.forEach(participation=>{
+            this.countryVersusMedalsPerYear[this.selectedCountryId].push(
               {year:participation.year,
               medalsCount:participation.medalsCount
               });})

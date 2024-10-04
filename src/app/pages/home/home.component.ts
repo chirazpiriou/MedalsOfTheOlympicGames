@@ -19,11 +19,11 @@ export class HomeComponent implements OnInit {
   public loadError=false;
   public countriesNumber: number = 0;
   public joNumber: number = 0;
-  public countryVersusTotalsMedals :{ [country: string]:number} = {};
-  public countrysVersusTotalsMedalsPieChartFormat: { name: string; value: number }[] = [];
+  public countrysVersusTotalsMedalsPieChartFormat: { name: string, value: number ,  extra:{id:number} }[] = [];
 
 
-  // options Pie chart
+
+  // options Pie Chart
   gradient: boolean = false;
   showLegend: boolean = false;
   showLabels: boolean = true;
@@ -36,14 +36,16 @@ export class HomeComponent implements OnInit {
 
   constructor(private olympicService: OlympicService , public router : Router) {}
 
-  /** Navigates to a details page based on the selected country and returns the country's name.
+  /** Navigates to a details page based on the selected country id .
    * This method uses router.navigateByUrl to redirect the user to a country-specific details page,
-   * using the country's name in the URL. For example, if the country name is "France", the user will
-   * be redirected to `detail/France`.*/
+   * using the country's id in the URL. For example, if the country id is 1 , the user will
+   * be redirected to `detail/2` and have the informations about france.*/
 
-  selectedCountry(event:{ name: string; value: number }):void {
-    this.router.navigateByUrl('detail/'+event.name)
+   selectedCountryId(event:{ name: string, value: number ,  extra:{id:number} }):void {
+    console.log(event)
+    this.router.navigateByUrl('detail/'+ event.extra.id)
   }
+
 
   ngOnInit(): void {
     this.loadingOlympicData = true; //Data loading begins
@@ -54,12 +56,11 @@ export class HomeComponent implements OnInit {
         if (data && data.length > 0){
           this.countriesNumber = data.length;
           this.joNumber = data.flatMap(country => country.participations ).length/this.countriesNumber
-          data.forEach(countryBloc => {
-            let totalMedalsByCountry:number = countryBloc.participations.reduce((total: number , countryParticipation) => {
-              return total + countryParticipation.medalsCount;}, 0);
-            this.countryVersusTotalsMedals[countryBloc.country] =totalMedalsByCountry
-            this.countrysVersusTotalsMedalsPieChartFormat=Object.entries(this.countryVersusTotalsMedals).map(([name,value])=>({name,value}));
-          })
+          this.countrysVersusTotalsMedalsPieChartFormat = data.map(country => ({
+            name: country.country,
+            value: country.participations.reduce((total, participation) => total + participation.medalsCount, 0),
+            extra:{id:country.id}
+          }));
         } else {
           this.loadError = true; //no data available
         }
@@ -77,6 +78,4 @@ export class HomeComponent implements OnInit {
   ngOnDestroy() : void {
     this.olympicSubscription.unsubscribe();
   }
-
-
 }

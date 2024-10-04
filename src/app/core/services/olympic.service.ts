@@ -70,21 +70,21 @@ export class OlympicService {
 
 
   /**
- * The getOlympicsCountryByCountryName function retrieves the participation data
+ * The getOlympicsCountryByCountryId function retrieves the participation data
  * for a specific country, identified by its ID.
  * It returns an observable that emits an array of Participation objects.*/
-  getOlympicsCountryByCountryName(countryName :string): Observable<Participation[]> {
+  getOlympicsCountryByCountryId(countryId :number): Observable<Olympic> {
     return this.olympics$.asObservable().pipe(
       map(countries  => {
-        const  countryDetails = countries.find(x => x.country.toLowerCase() === countryName.toLowerCase() );
+        const  countryDetails = countries.find(x => x.id === countryId );
         if (!countryDetails){
-          throw new Error (`No country found for ID: ${countryName}`);
+          throw new Error (`No country found for ID: ${countryId}`);
         }
-        return countryDetails.participations;
+        return countryDetails ;
     }),
       catchError(error => {
         console.error(error);
-        return of([]);
+        return of();
 
       })
   );
