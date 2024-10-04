@@ -43,6 +43,14 @@ export class DetailComponent implements OnInit{
 
   constructor(private olympicService: OlympicService , private route: ActivatedRoute){}
 
+  /**This function is called when the window resize event occurs. It retrieves the target of the event, which is the browser window (Window)
+   * It updates the "view" property of the current object (this).*/
+
+  onResize(event:UIEvent) {
+    const target = event.target as Window;
+    this.view = [target.innerWidth / 1.35, 400];
+  }
+
  
 
   ngOnInit(): void {

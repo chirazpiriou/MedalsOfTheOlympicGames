@@ -41,10 +41,18 @@ export class HomeComponent implements OnInit {
    * using the country's id in the URL. For example, if the country id is 1 , the user will
    * be redirected to `detail/2` and have the informations about france.*/
 
-   selectedCountryId(event:{ name: string, value: number ,  extra:{id:number} }):void {
+  selectedCountryId(event:{ name: string, value: number ,  extra:{id:number} }):void {
     console.log(event)
     this.router.navigateByUrl('detail/'+ event.extra.id)
   }
+   /**This function is called when the window resize event occurs. It retrieves the target of the event, which is the browser window (Window)
+   * It updates the "view" property of the current object (this).*/
+  
+  onResize(event:UIEvent) {
+    const target = event.target as Window;
+    this.view = [target.innerWidth / 1, 400];
+  }
+
 
 
   ngOnInit(): void {

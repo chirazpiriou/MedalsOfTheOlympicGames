@@ -20,7 +20,8 @@
             [gradient]="gradient"
             [legend]="showLegend"
             [labels]="showLabels"
-            (select)="selectedCountryId($event)" />
+            (select)="selectedCountryId($event)"
+            (window:resize)="onResize($event)" />
         </div>
         <br>
 </main>
