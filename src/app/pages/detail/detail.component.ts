@@ -20,6 +20,8 @@ export class DetailComponent implements OnInit{
   public totalNumberOfENtries:number=0;
   public totalNumberMedals:number=0;
   public totalNumberOfAthletes:number=0;
+  public countryVersusMedalsPerYear:{[country:string]:{year: number,medalsCount: number}[]}={};
+  public countrysVersusMedalsPerYearLineChartFormat: { name: string; series: {value:number,name:string}[] }[] = [];
 
 
   constructor(private olympicService: OlympicService , private route: ActivatedRoute){}
@@ -47,13 +49,36 @@ export class DetailComponent implements OnInit{
             {return total+countryNumberMedals.medalsCount;},0);
             this.totalNumberMedals = NumberMedalsCount;
 
-            let NumberAthletesCount : number =data.reduce(
-              (total:number ,countryNumberAthletes )=>
-              {return total+countryNumberAthletes.athleteCount;},0);
-              this.totalNumberOfAthletes = NumberAthletesCount ;
+          let NumberAthletesCount : number =data.reduce(
+            (total:number ,countryNumberAthletes )=>
+            {return total+countryNumberAthletes.athleteCount;},0);
+            this.totalNumberOfAthletes = NumberAthletesCount ;
+
+          this.countryVersusMedalsPerYear[this.selectedCountry] = [];
+          data.forEach(participation=>{
+            this.countryVersusMedalsPerYear[this.selectedCountry].push(
+              {year:participation.year,
+              medalsCount:participation.medalsCount
+              });})
+            /** Transforms the `countryVersusMedalsPerYear` object into a format suitable for ngx-Charts "line chart".
+             * Each entry in the output array contains:
+             * - `name`: The name of the country.
+             * - `series`: An array of objects, where each object represents a year's medal data:
+             * - `value`: The number of medals won.
+             * - `name`: The year of participation as a string.
+             * This format enables easy visualization of medal counts over the years for each country.*/
+            this.countrysVersusMedalsPerYearLineChartFormat=Object.entries(this.countryVersusMedalsPerYear).map(([name,series])=>{
+              return {
+                name,
+                series:series.map(participation=>({
+                  value:participation.medalsCount,
+                  name:participation.year.toString()
+                }))
+              };
+       
+            });
 
         } 
-
     }});
   
   
