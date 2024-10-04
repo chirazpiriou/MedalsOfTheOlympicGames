@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of, Subscription } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
@@ -33,7 +34,16 @@ export class HomeComponent implements OnInit {
   };
 
 
-  constructor(private olympicService: OlympicService) {}
+  constructor(private olympicService: OlympicService , public router : Router) {}
+
+  /** Navigates to a details page based on the selected country and returns the country's name.
+   * This method uses router.navigateByUrl to redirect the user to a country-specific details page,
+   * using the country's name in the URL. For example, if the country name is "France", the user will
+   * be redirected to `detail/France`.*/
+
+  selectedCountry(event:{ name: string; value: number }):void {
+    this.router.navigateByUrl('detail/'+event.name)
+  }
 
   ngOnInit(): void {
     this.loadingOlympicData = true; //Data loading begins

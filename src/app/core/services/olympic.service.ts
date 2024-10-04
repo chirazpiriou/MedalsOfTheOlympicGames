@@ -36,7 +36,7 @@ export class OlympicService {
         let errorMessage = 'An error has occurred';
         //Error type identification
         if (error.error instanceof ErrorEvent) {
-          errorMessage='network error: ${error.error.message}'
+          errorMessage=`network error: ${error.error.message}`
         } else {
           switch (error.status) {
             case 404:
@@ -49,7 +49,7 @@ export class OlympicService {
               errorMessage='Error 403 => Access forbidden.';
               break;
             default:
-              errorMessage='Error ${error.status}: ${error.error.message}';
+              errorMessage=`Error ${error.status}: ${error.error.message}`;
           }
         }
         console.error(errorMessage);
@@ -73,12 +73,12 @@ export class OlympicService {
  * The getOlympicsCountryByCountryName function retrieves the participation data
  * for a specific country, identified by its ID.
  * It returns an observable that emits an array of Participation objects.*/
-  getOlympicsCountryByCountryName(countryId :number): Observable<Participation[]> {
+  getOlympicsCountryByCountryName(countryName :string): Observable<Participation[]> {
     return this.olympics$.asObservable().pipe(
       map(countries  => {
-        const  countryDetails = countries.find(x => x.id === countryId );
+        const  countryDetails = countries.find(x => x.country.toLowerCase() === countryName.toLowerCase() );
         if (!countryDetails){
-          throw new Error ('No country found for ID: ${countryId}');
+          throw new Error (`No country found for ID: ${countryName}`);
         }
         return countryDetails.participations;
     }),
