@@ -1,7 +1,7 @@
 <header>
     <h2>Olympic games app</h2>
-    <section>
-        <button >Return</button>
+    <section *ngIf="isDetailPage">
+        <button (click)="GoBackHomePage()" class="ReturnButton">Return</button>
     </section>
     <hr />
 </header>
