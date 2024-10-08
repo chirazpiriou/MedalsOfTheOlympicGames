@@ -33,5 +33,4 @@ export class HeaderComponent implements OnInit{
     this.routeSubscription.unsubscribe();
   }
 
-
 }

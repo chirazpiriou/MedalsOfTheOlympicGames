@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
-import { Participation } from '../models/Participation';
-
 
 @Injectable({
   providedIn: 'root',
@@ -69,10 +67,11 @@ export class OlympicService {
   }
 
 
-  /**
- * The getOlympicsCountryByCountryId function retrieves the participation data
- * for a specific country, identified by its ID.
- * It returns an observable that emits an array of Participation objects.*/
+  /** The getOlympicsCountryByCountryId function retrieves detailed Olympic information for a specific country based on its ID.
+   * This function returns an observable that emits the Olympic data for the country with the given ID. It leverages the `olympics$` 
+   * observable to fetch the list of countries, filters for the specified country, and maps the result to return the country details.
+   *  If no country is found with the given ID, an error is thrown.*/
+
   getOlympicsCountryByCountryId(countryId :number): Observable<Olympic> {
     return this.olympics$.asObservable().pipe(
       map(countries  => {

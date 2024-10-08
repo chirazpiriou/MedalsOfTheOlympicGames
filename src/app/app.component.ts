@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { OlympicService } from './core/services/olympic.service';
 
 @Component({

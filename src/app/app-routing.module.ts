@@ -10,8 +10,8 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'detail/:id',
-    component: DetailComponent
+    path: 'detail/:id', // Defines the route path; ':id' is a route parameter for dynamic routing.
+    component: DetailComponent // Specifies the component to be displayed when the route is activated.
   },
   {
     path: '**', // wildcard

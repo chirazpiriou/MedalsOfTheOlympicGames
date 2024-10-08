@@ -1,5 +1,6 @@
 <header>
     <h2>Olympic games app</h2>
+    <!-- Displays a section with a "Return" button that navigates back to the home page when clicked, only if 'isDetailPage' is true -->
     <section *ngIf="isDetailPage">
         <button (click)="GoBackHomePage()" class="ReturnButton">Return</button>
     </section>

@@ -13,6 +13,9 @@
         </div>
     </section>
     <div class="PieChartBloc ">
+        <!--[results]="countrysVersusTotalsMedalsPieChartFormat"  =>  The data source for the chart -->
+        <!--(select)="selectedCountryId($event)"  =>  Handles the selection of a chart segment -->
+        <!--(window:resize)="onResize($event)"  =>  Handles window resize events  -->
         <ngx-charts-pie-chart
             [results]="countrysVersusTotalsMedalsPieChartFormat"
             [view]="view"
@@ -20,7 +23,7 @@
             [gradient]="gradient"
             [legend]="showLegend"
             [labels]="showLabels"
-            (select)="selectedCountryId($event)"
+            (select)="selectedCountryId($event)" 
             (window:resize)="onResize($event)" />
         </div>
         <br>

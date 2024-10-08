@@ -12,6 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NotFoundComponent,DetailComponent,HeaderComponent],
+  // Importing the NgxChartsModule to enable charting capabilities in the application
+  // BrowserAnimationsModule Enables animations in the application, required by some Angular features
   imports: [BrowserModule, AppRoutingModule, HttpClientModule,NgxChartsModule,BrowserAnimationsModule],
   providers: [],
   bootstrap: [AppComponent],

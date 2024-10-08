@@ -23,26 +23,27 @@ export class HomeComponent implements OnInit {
 
 
 
-  // options Pie Chart
-  gradient: boolean = false;
+  /** Configuration options for the chart component.This class contains various properties that define the appearance and behavior
+ * of a chart. These properties allow customization of the chart's display features, such as gradients, legends, labels, and color
+ * schemes.*/
+  gradient: boolean = false; //Specifies whether a color gradient is to be applied to graph segments.
   showLegend: boolean = false;
   showLabels: boolean = true;
-  isDoughnut: boolean = false;
+  isDoughnut: boolean = false; //Indicates whether to display the chart as a doughnut chart.
   view: [number, number] = [700, 500];
   colorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
-
+ // The service OlympicService is injected via the Homecomponent constructor 
   constructor(private olympicService: OlympicService , public router : Router) {}
 
   /** Navigates to a details page based on the selected country id .
    * This method uses router.navigateByUrl to redirect the user to a country-specific details page,
-   * using the country's id in the URL. For example, if the country id is 1 , the user will
-   * be redirected to `detail/2` and have the informations about france.*/
+   * using the country's id in the URL. For example, if the country id is 2 , the user will
+   * be redirected to `detail/2` and have the informations about Spain.*/
 
   selectedCountryId(event:{ name: string, value: number ,  extra:{id:number} }):void {
-    console.log(event)
     this.router.navigateByUrl('detail/'+ event.extra.id)
   }
    /**This function is called when the window resize event occurs. It retrieves the target of the event, which is the browser window (Window)

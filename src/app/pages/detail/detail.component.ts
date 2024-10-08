@@ -1,10 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of, Subscription } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
-
 import { Participation } from 'src/app/core/models/Participation';
-
 import { OlympicService } from 'src/app/core/services/olympic.service';
 
 @Component({
@@ -25,7 +23,12 @@ export class DetailComponent implements OnInit{
   public countrysVersusMedalsPerYearLineChartFormat: { name: string; series: {value:number,name:string}[] }[] = [];
   public countryName !: string;
 
-   // options Line chart
+  /**  This code defines various configuration options for the chart, including: 'legend' (visibility of the legend),
+   * 'showLabels' (to display labels on chart segments), 'animations' (to enable or disable animations for visual effects),
+   * 'xAxis' and 'yAxis' (to determine if the respective axes are shown), 'showYAxisLabel' and 'showXAxisLabel' 
+   * (to control the visibility of axis labels), 'xAxisLabel' and 'yAxisLabel' (to set the text for the axes), 'timeline' 
+   * (to indicate whether a timeline view should be displayed), 'view' (to define the chart's dimensions in pixels), 
+   * and 'colorScheme' (to specify the colors used in the chart).*/
    legend: boolean = false;
    showLabels: boolean = true;
    animations: boolean = true;
@@ -51,12 +54,10 @@ export class DetailComponent implements OnInit{
     this.view = [target.innerWidth / 1.35, 400];
   }
 
- 
-
   ngOnInit(): void {
 
-    /** Subscribe to the route parameters to track changes in the URL. Retrieve the country parameter from the URL.
-     * At this point, this.selectedCountryId will contain the name of the selected country based on what was specified in the URL */
+    /** Subscribe to the route parameters to track changes in the URL. Retrieve the id parameter from the URL.
+     * At this point, this.selectedCountryId will contain the id of the selected country based on what was specified in the URL */
     this.routeSubscription=this.route.params.subscribe(urlParams=>{
       this.selectedCountryId=parseInt(urlParams['id'], 10);
     })
@@ -102,7 +103,6 @@ export class DetailComponent implements OnInit{
               };
        
             });
-
         } 
     }});
   
